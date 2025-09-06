@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Meta tags para SEO e performance -->
+    <meta name="description" content="Check-in obrigatório para o Gestor de IA do ZERO - Confirme sua presença até terça-feira às 18h" />
+    <meta name="keywords" content="gestor, inteligência artificial, IA, check-in, IAClub, Rodolfo Mori" />
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical resources -->
+    <link rel="dns-prefetch" href="https://www.youtube.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    
+    <!-- Performance optimizations -->
+    <meta name="theme-color" content="#020A13">
+    <meta name="color-scheme" content="dark">
+    
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '241752320666130');
+    fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+    
+    <title>Check-in | Gestor de IA do ZERO</title>
+    
+    <style>
+      /* Critical CSS inline para evitar FOUC */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #020A13;
+        color: #F8F9FA;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* Performance optimizations */
+      .low-performance * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      
+      .mobile-optimized .floating-blobs {
+        opacity: 0.2;
+      }
+      
+      .mobile-optimized .particle {
+        animation-duration: 6s !important;
+      }
+      
+      .mobile-optimized .blob {
+        animation-duration: 8s !important;
+      }
+      
+      /* Hardware acceleration for animations */
+      .hero-section,
+      .cta-button,
+      .benefit-card,
+      .step-item,
+      .testimonial-card,
+      .schedule-item,
+      .floating-blobs,
+      .particle {
+        will-change: transform, opacity;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+      }
+      
+      /* Optimize loading screen */
+      .loading-screen {
+        will-change: opacity, transform;
+      }
+      
+      /* Optimize scroll performance */
+      .container {
+        will-change: transform;
+        transform: translateZ(0);
+      }
+      
+      /* Mobile modal optimizations */
+      @media (max-width: 768px) {
+        .modal-fullscreen-mobile {
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          max-width: none !important;
+          max-height: none !important;
+          margin: 0 !important;
+          border-radius: 0 !important;
+        }
+        
+        .modal-fullscreen-mobile .glass-card {
+          border-radius: 0 !important;
+          height: 100vh !important;
+          overflow-y: auto !important;
+        }
+      }
+      
+      /* Reduce motion for users who prefer it */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        
+        .floating-blobs,
+        .particle {
+          display: none;
+        }
+      }
+      
+      /* Loading screen */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #020A13 0%, #0A1A2E 50%, #020A13 100%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      
+      .loading-screen.fade-out {
+        opacity: 0;
+        transform: scale(1.1);
+        pointer-events: none;
+      }
+
+      /* Spinner */
+      .spinner {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 30px;
+        position: relative;
+      }
+
+      .spinner-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        z-index: 1;
+        animation: pulse-center 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-center {
+        0%, 100% { 
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.8;
+        }
+        50% { 
+          transform: translate(-50%, -50%) scale(1.1);
+          opacity: 1;
+        }
+      }
+
+      .spinner-ring {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid rgba(55, 227, 89, 0.1);
+        border-radius: 50%;
+        border-top: 3px solid #37E359;
+        animation: spin 1s linear infinite;
+      }
+
+      .spinner-ring:nth-child(2) {
+        width: 90%;
+        height: 90%;
+        top: 5%;
+        left: 5%;
+        border-top-color: #52FF74;
+        animation: spin 1.5s linear infinite reverse;
+      }
+
+      .spinner-ring:nth-child(3) {
+        width: 80%;
+        height: 80%;
+        top: 10%;
+        left: 10%;
+        border-top-color: #37E359;
+        animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Loading text and progress */
+      .loading-content {
+        text-align: center;
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      .loading-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #F8F9FA;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px rgba(55, 227, 89, 0.5);
+      }
+
+      .loading-subtitle {
+        font-size: 0.9rem;
+        color: #94A3B8;
+        margin-bottom: 30px;
+      }
+
+      .progress-container {
+        width: 300px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0 auto 15px auto;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(55, 227, 89, 0.2);
+      }
+
+      /* Responsive progress bar */
+      @media (max-width: 768px) {
+        .progress-container {
+          width: 280px;
+          height: 6px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .progress-container {
+          width: 260px;
+          height: 6px;
+        }
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #37E359, #52FF74, #37E359);
+        background-size: 200% 100%;
+        border-radius: 10px;
+        width: 0%;
+        transition: width 0.2s ease-out;
+        animation: progress-glow 2s ease-in-out infinite;
+        box-shadow: 0 0 15px rgba(55, 227, 89, 0.6);
+        will-change: width;
+        transform: translateZ(0);
+      }
+
+      @keyframes progress-glow {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+
+      .progress-text {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #37E359;
+        text-shadow: 0 0 10px rgba(55, 227, 89, 0.8);
+      }
+
+      .loading-steps {
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: #64748B;
+        min-height: 20px;
+      }
+
+      /* Floating particles */
+      .loading-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #37E359;
+        border-radius: 50%;
+        animation: float-particle 3s ease-in-out infinite;
+        opacity: 0.7;
+        box-shadow: 0 0 8px #37E359;
+      }
+
+      @keyframes float-particle {
+        0%, 100% { 
+          transform: translateY(0px) translateX(0px);
+          opacity: 0.7;
+        }
+        50% { 
+          transform: translateY(-20px) translateX(10px);
+          opacity: 1;
+        }
+      }
+
+      /* Loading background pattern */
+      .loading-screen::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: linear-gradient(rgba(55, 227, 89, 0.03) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(55, 227, 89, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: grid-move 10s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes grid-move {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, 50px); }
+      }
+      
+      /* Custom cursor removed - using default cursor */
+      
+      /* Grid background */
+      .grid-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: linear-gradient(rgba(55, 227, 89, 0.05) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(55, 227, 89, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Facebook Pixel Noscript -->
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=241752320666130&ev=PageView&noscript=1"
+    /></noscript>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <!-- Floating particles -->
+      <div class="loading-particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+      <div class="loading-particle" style="top: 30%; left: 80%; animation-delay: 0.5s;"></div>
+      <div class="loading-particle" style="top: 60%; left: 15%; animation-delay: 1s;"></div>
+      <div class="loading-particle" style="top: 70%; left: 85%; animation-delay: 1.5s;"></div>
+      <div class="loading-particle" style="top: 80%; left: 50%; animation-delay: 2s;"></div>
+
+      <!-- Spinner -->
+      <div class="spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-center">🤖</div>
+      </div>
+
+      <!-- Loading content -->
+      <div class="loading-content">
+        <div class="loading-title">Inicializando IAClub</div>
+        <div class="loading-subtitle">Preparando sua experiência de IA...</div>
+        
+        <!-- Progress bar -->
+        <div class="progress-container">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        
+        <!-- Percentage -->
+        <div id="progress-text" class="progress-text">0%</div>
+        
+        <!-- Loading steps -->
+        <div id="loading-steps" class="loading-steps">Carregando recursos...</div>
+      </div>
+    </div>
+    
+
+    
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <script>
+      // Performance optimizations for check-in page
+      let currentProgress = 0;
+      const progressBar = document.getElementById('progress-bar');
+      const progressText = document.getElementById('progress-text');
+      const loadingSteps = document.getElementById('loading-steps');
+      let progressRAF;
+      
+      // Performance detection
+      const isMobile = window.innerWidth <= 768;
+      const hasReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isLowPerformance = navigator.deviceMemory < 4 || navigator.hardwareConcurrency < 4;
+      
+      const steps = [
+         '🔧 Carregando recursos do IAClub...',
+         '🤖 Inicializando sistemas de IA...',
+         '🌐 Conectando com servidores...',
+         '🧠 Preparando modelos neurais...',
+         '🎯 Configurando experiência personalizada...',
+         '🚀 Quase pronto para começar...'
+       ];
+      
+      let stepIndex = 0;
+      
+      function updateProgress() {
+        // Optimized progress simulation
+        const increment = isMobile ? Math.random() * 25 + 15 : Math.random() * 20 + 10; // Faster on mobile
+        currentProgress = Math.min(currentProgress + increment, 100);
+        
+        // Use RAF for smooth updates
+        if (progressRAF) cancelAnimationFrame(progressRAF);
+        progressRAF = requestAnimationFrame(() => {
+          progressBar.style.width = currentProgress + '%';
+          progressText.textContent = Math.floor(currentProgress) + '%';
+        });
+        
+        // Update loading step
+        if (stepIndex < steps.length - 1 && currentProgress > (stepIndex + 1) * 16) {
+          stepIndex++;
+          loadingSteps.textContent = steps[stepIndex];
+        }
+        
+        if (currentProgress < 100) {
+          // Optimized intervals
+          const interval = isMobile ? Math.random() * 80 + 40 : Math.random() * 100 + 50; // Faster on mobile
+          setTimeout(updateProgress, interval);
+        } else {
+           // Loading complete
+           setTimeout(() => {
+             loadingSteps.textContent = '✅ Carregamento concluído!';
+             progressText.textContent = '100%';
+             
+             // Success animation
+             setTimeout(() => {
+               loadingSteps.innerHTML = '🎉 <strong>Bem-vindo ao IAClub!</strong> 🚀';
+               progressBar.style.boxShadow = '0 0 25px rgba(55, 227, 89, 1)';
+               
+               setTimeout(() => {
+                 const loading = document.getElementById('loading-screen');
+                 if (loading) {
+                   loading.classList.add('fade-out');
+                   setTimeout(() => {
+                     if (loading.parentNode) loading.remove()
+                   }, 600); // Reduced from 800ms
+                 }
+               }, 400); // Reduced from 600ms
+             }, 300); // Reduced from 400ms
+           }, 150); // Reduced from 200ms
+         }
+      }
+      
+      // Performance optimizations
+      function setupPerformanceOptimizations() {
+        // Reduce animations for low performance devices
+        if (isLowPerformance || hasReducedMotion) {
+          document.body.classList.add('low-performance');
+        }
+        
+        // Mobile optimizations
+        if (isMobile) {
+          document.body.classList.add('mobile-optimized');
+        }
+        
+        // Optimize scroll performance
+        let ticking = false;
+        const handleScroll = () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              // Handle scroll optimizations if needed
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Visibility change handler for performance
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            document.body.style.animationPlayState = 'paused';
+          } else {
+            document.body.style.animationPlayState = 'running';
+          }
+        });
+      }
+      
+      // Start optimizations when DOM is ready
+      document.addEventListener('DOMContentLoaded', () => {
+        setupPerformanceOptimizations();
+        setTimeout(updateProgress, 150); // Reduced from 200ms
+      });
+      
+      // Fallback: ensure loading screen disappears
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if (document.getElementById('loading-screen')) {
+            currentProgress = 100;
+            updateProgress();
+          }
+        }, 1500); // Reduced from 2000ms for better UX
+      });
+      
+      // Error handling
+      window.addEventListener('error', (e) => {
+        console.error('JavaScript error:', e.error);
+        // Ensure loading screen disappears on error
+        if (document.getElementById('loading-screen')) {
+          currentProgress = 100;
+          updateProgress();
+        }
+      });
+    </script>
+  </body>
+</html> 
