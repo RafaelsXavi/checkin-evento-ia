@@ -45,7 +45,7 @@ Uma página de check-in **extremamente impressionante** para o Bootcamp Programa
 
 1. **Clone o repositório:**
 ```bash
-git clone [seu-repositorio]
+git clone https://github.com/RafaelsXavi/checkin-evento-ia
 cd "3. Check In"
 ```
 
